@@ -18,7 +18,7 @@ import pytest
 import subprocess
 
 class TestParameters():
-        ledctl_bin = "src/ledctl/ledctl"
+        ledctl_bin = "sudo src/ledctl/ledctl"
         SUCCESS_EXIT_CODE = 0
         CMDLINE_ERROR_EXIT_CODE = 35
 
