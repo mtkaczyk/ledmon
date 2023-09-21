@@ -20,19 +20,15 @@ jobs:
         gcc-version: [7, 8, 9, 10, 11, 12, 13]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: 'Add ubuntu repository'
-      run: sudo add-apt-repository "deb [arch=amd64] http://archive.ubuntu.com/ubuntu focal main universe"
-    - name: 'Install gcc'
-      run: sudo apt-get update && sudo apt-get install gcc-${{ matrix.gcc-version }} g++-${{ matrix.gcc-version }}
-    - name: 'Install dependencies'
-      run: sudo apt-get install pkg-config automake autoconf autoconf-archive make libsgutils2-dev libudev-dev libpci-dev check
-    - name: 'Generate compiling configurations'
-      run: ./autogen.sh && ./configure --enable-test --enable-library
-    - name: 'Make'
-      run: CC=gcc-${{ matrix.gcc-version }} CXX=g++-${{ matrix.gcc-version }} && V=1 make -j$(nproc)
-    - name: 'Check public symbol visibility'
-      run: tests/check_symbol_visibility.sh
+      - uses: actions/checkout@v3
+      - name: 'Add ubuntu repository and install dependencies'
+        run: tests/install_ubuntu_packages.sh ${{ matrix.gcc-version }}
+      - name: 'Generate compiling configurations'
+        run: ./autogen.sh && ./configure --enable-test --enable-library
+      - name: 'Make'
+        run: CC=gcc-${{ matrix.gcc-version }} CXX=g++-${{ matrix.gcc-version }} && V=1 make -j$(nproc)
+      - name: 'Check public symbol visibility'
+        run: tests/check_symbol_visibility.sh
   tests:
     name: Run tests
     strategy:
@@ -42,12 +38,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: 'Add ubuntu repository'
-        run: sudo add-apt-repository "deb [arch=amd64] http://archive.ubuntu.com/ubuntu focal main universe"
-      - name: 'Install gcc'
-        run: sudo apt-get update && sudo apt-get install gcc-${{ matrix.gcc-version }} g++-${{ matrix.gcc-version }}
-      - name: 'Install dependencies'
-        run: sudo apt-get install pkg-config automake autoconf autoconf-archive make libsgutils2-dev libudev-dev libpci-dev check
+      - name: 'Add ubuntu repository and install dependencies'
+        run: tests/install_ubuntu_packages.sh ${{ matrix.gcc-version }}
       - name: 'Generate compiling configurations'
         run: ./autogen.sh && ./configure --enable-test --enable-library
       - name: 'Make'
@@ -60,7 +52,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pytest
-      - name: Test with pytest
+      - name: Run tests using pytest
         run: |
           # Run only non-hardware dependent tests
-          pytest tests/parameters_test.py
+          pytest

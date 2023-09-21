@@ -479,7 +479,9 @@ enum opt {
 	OPT_SLOT,
 	OPT_STATE,
 	OPT_IBPI_MODE,
+#ifdef ENABLE_TEST
 	OPT_TEST,
+#endif
 	OPT_NULL_ELEMENT
 };
 

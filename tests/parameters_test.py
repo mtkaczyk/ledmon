@@ -65,6 +65,11 @@ class TestParameters():
                 "normal=/dev/nvme0n1 --log=/var/log/ledctl.log",
                 "normal=/dev/nvme0n1 --log-level=all",
                 "normal=/dev/nvme0n1 --all",
+                "-x normal={ /dev/nvme0n1 }",
+                "locate=/dev/nvme0n1 rebuild={ /sys/block/sd[a-b] }",
+                "off={ /dev/sda /dev/sdb }",
+                "locate=/dev/sda,/dev/sdb,/dev/sdc"
+
         ],)
         def test_ibpi_parameters_are_valid_short_test_flag_first(self, valid_ibpi_commands):
                 self.verify_if_flag_is_enabled()
@@ -76,11 +81,11 @@ class TestParameters():
                 assert result.returncode == self.SUCCESS_EXIT_CODE
 
         @pytest.mark.parametrize("invalid_modes_commands_usage", [
-                "-l /var/log/ledctl.log", # TODO should fail
-                "--log=/var/log/ledctl.log", # TODO should fail
-                "--log-level=all", # TODO should fail
-                "-x", # TODO should fail only for ibpi
-                "--listed-only", # TODO should fail only for ibpi
+                "-l /var/log/ledctl.log", # log file should be used with valid command
+                "--log=/var/log/ledctl.log", # log file should be used with valid command
+                "--log-level=all", #  log level should be used with valid command
+                "-x", # listed-only can be used only with ibpi command
+                "--listed-only", # listed-only can be used only with ibpi command
         ],)
         def test_modes_parameters_invalid_short_test_flag_first(self, invalid_modes_commands_usage):
                 self.verify_if_flag_is_enabled()
@@ -94,8 +99,10 @@ class TestParameters():
         @pytest.mark.parametrize("invalid_ibpi_commands_usage", [
                 "normal=/dev/nvme0n1 -G -c vmd --slot=2", # mix IBPI set LED state with get slot state
                 "normal=/dev/nvme0n1 --information", # invalid flag
-                "normal=/dev/nvme0n1 -L" # mix IBPI set LED state with list controllers
-        ],)
+                "normal=/dev/nvme0n1 -L", # mix IBPI set LED state with list controllers
+                "--listed-only { locate={ /dev/nvme0n1 } } -x rebuild=/dev/nvme1n1 s d }",
+                "--listed-only { locate={ /dev/nvme0n1 } -x rebuild=/dev/nvme1n1 }"
+          ],)
         def test_ibpi_parameters_invalid_short_test_flag_first(self, invalid_ibpi_commands_usage):
                 self.verify_if_flag_is_enabled()
                 # test using short test flag format "-T"

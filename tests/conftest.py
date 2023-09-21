@@ -4,7 +4,7 @@ import pytest
 LOGGER = logging.getLogger(__name__)
 
 def pytest_addoption(parser):
-    parser.addoption("--ledctl-binary", action="store", default="/usr/sbin/ledctl")
+    parser.addoption("--ledctl-binary", action="store", default="src/ledctl/ledctl")
     parser.addoption("--slot-filters", action="store", default="")
 
 def pytest_collection_modifyitems(session, config, items):

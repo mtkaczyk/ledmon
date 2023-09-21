@@ -599,7 +599,9 @@ struct option longopt_all[] = {
 	[OPT_DEVICE]       = {"device", required_argument, NULL, 'd'},
 	[OPT_SLOT]         = {"slot", required_argument, NULL, 'p'},
 	[OPT_STATE]        = {"state", required_argument, NULL, 's'},
+#ifdef ENABLE_TEST
 	[OPT_TEST]         = {"test", no_argument, NULL, 'T'},
+#endif
 	[OPT_NULL_ELEMENT] = {NULL, no_argument, NULL, '\0'}
 };
 
