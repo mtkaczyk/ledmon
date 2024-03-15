@@ -1,0 +1,22 @@
+header:
+  - path: "tests/ledctl"
+    license:
+      content: |
+       SPDX-License-Identifier: GPL-3.0-or-later
+  - path: "src/lib"
+    license:
+      spdx-id: LGPL-2.1-or-later
+
+    license-location-threshold: 10
+
+    paths-ignore:
+      - '*.md'
+      - 'autogen.sh'
+      - 'COPYING'
+      - 'COPYING.LIB'
+      - '.checkpatch.conf'
+      - '.style.yapf'
+      - '.github/**'
+      - '.gitignore'
+
+    comment: never
