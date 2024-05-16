@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Set compiler flags
 if ! [[ -z $1 ]];
 then
