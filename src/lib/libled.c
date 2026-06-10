@@ -33,6 +33,7 @@ led_status_t led_new(struct led_ctx **ctx)
 	list_init(&t_ctx->config.allowlist, free);
 	list_init(&t_ctx->config.excludelist, free);
 
+	t_ctx->config.use_npem_driver = 1;
 	t_ctx->log_fd = -1;
 	t_ctx->log_lvl = LED_LOG_LEVEL_ERROR;
 
@@ -66,9 +67,9 @@ void led_log_level_set(struct led_ctx *ctx, enum led_log_level_enum level)
 	ctx->log_lvl = level;
 }
 
-void use_userspace_npem_controller(struct led_ctx *ctx)
+void use_kernel_npem_driver(struct led_ctx *ctx, int val)
 {
-	ctx->config.userspace_npem = 1;
+	ctx->config.use_npem_driver = val;
 }
 
 led_status_t led_scan(struct led_ctx *ctx)
