@@ -84,10 +84,10 @@ static void _set_send_message_fn(struct block_device *device)
 		device->send_message_fn = vmdssd_write;
 		break;
 	case LED_CNTRL_TYPE_NPEM:
-		if (device->cntrl->ctx->config.userspace_npem)
-			device->send_message_fn = npem_write;
-		else
+		if (device->cntrl->ctx->config.use_npem_driver)
 			device->send_message_fn = kernel_npem_write;
+		else
+			device->send_message_fn = npem_write;
 		break;
 	case LED_CNTRL_TYPE_AMD:
 		device->send_message_fn = amd_write;
@@ -142,10 +142,10 @@ static char *_get_host(char *path, struct cntrl_device *cntrl)
 	else if (cntrl->cntrl_type == LED_CNTRL_TYPE_AHCI)
 		result = ahci_get_port_path(path);
 	else if (cntrl->cntrl_type == LED_CNTRL_TYPE_NPEM) {
-		if (cntrl->ctx->config.userspace_npem)
-			result = npem_get_path(cntrl->sysfs_path);
-		else
+		if (cntrl->ctx->config.use_npem_driver)
 			result = kernel_npem_get_path(cntrl->sysfs_path);
+		else
+			result = npem_get_path(cntrl->sysfs_path);
 	} else if (cntrl->cntrl_type == LED_CNTRL_TYPE_DELLSSD)
 		result = dellssd_get_path(cntrl->sysfs_path);
 	else if (cntrl->cntrl_type == LED_CNTRL_TYPE_VMD)

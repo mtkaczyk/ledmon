@@ -46,6 +46,7 @@ int ledmon_init_conf(struct ledmon_conf *conf, enum led_log_level_enum lvl, cons
 {
 	memset(conf, 0, sizeof(struct ledmon_conf));
 	conf->log_level = lvl;
+	conf->use_npem_driver = 1;
 	list_init(&conf->cntrls_allowlist, free);
 	list_init(&conf->cntrls_excludelist, free);
 
@@ -216,10 +217,10 @@ static int parse_next(FILE *fd, struct ledmon_conf *conf)
 		conf->raid_members_only = parse_bool(s);
 		if (conf->raid_members_only < 0)
 			return -1;
-	} else if (!strncmp(s, "USERSPACE_NPEM=", 15)) {
-		s += 15;
-		conf->userspace_npem = parse_bool(s);
-		if (conf->userspace_npem < 0)
+	} else if (!strncmp(s, "USE_NPEM_DRIVER=", 16)) {
+		s += 16;
+		conf->use_npem_driver = parse_bool(s);
+		if (conf->use_npem_driver < 0)
 			return -1;
 	} else if (_parse_and_add_to_list(s, WHITELIST, WHITELIST_LEN, &conf->cntrls_allowlist)) {
 		/* Deprecated, provided for backwards compatibility */
@@ -335,7 +336,7 @@ int ledmon_write_shared_conf(struct ledmon_conf *conf)
 	snprintf(buf + strlen(buf), sizeof(buf) - strlen(buf),
 		 "INTERVAL=%d\n", conf->scan_interval);
 	snprintf(buf + strlen(buf), sizeof(buf) - strlen(buf),
-		 "USERSPACE_NPEM=%d\n", conf->userspace_npem);
+		 "USE_NPEM_DRIVER=%d\n", conf->use_npem_driver);
 	allowlist = conf_list_to_str(&conf->cntrls_allowlist);
 	if (allowlist) {
 		snprintf(buf + strlen(buf), sizeof(buf) - strlen(buf),

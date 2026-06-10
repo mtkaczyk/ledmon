@@ -53,14 +53,18 @@ struct kernel_npem_led {
 };
 
 const struct kernel_npem_led kernel_npem_leds[] = {
+	/*
+	 * The kernel ledclass directory names.
+	 * They are ordered same as in ibpi_to_npem_capability.
+	 */
 	{PCI_NPEM_OK_CAP, "enclosure:ok"},
-	{PCI_NPEM_LOCATE_CAP, "enclosure:locate"},
-	{PCI_NPEM_FAIL_CAP, "enclosure:fail"},
-	{PCI_NPEM_REBUILD_CAP, "enclosure:rebuild"},
-	{PCI_NPEM_PFA_CAP, "enclosure:pfa"},
-	{PCI_NPEM_HOT_SPARE_CAP, "enclosure:hotspare"},
 	{PCI_NPEM_CRA_CAP, "enclosure:ica"},
+	{PCI_NPEM_HOT_SPARE_CAP, "enclosure:hotspare"},
+	{PCI_NPEM_REBUILD_CAP, "enclosure:rebuild"},
 	{PCI_NPEM_FA_CAP, "enclosure:ifa"},
+	{PCI_NPEM_PFA_CAP, "enclosure:pfa"},
+	{PCI_NPEM_FAIL_CAP, "enclosure:fail"},
+	{PCI_NPEM_LOCATE_CAP, "enclosure:locate"},
 };
 
 char *kernel_npem_get_path(const char *cntrl_path)
@@ -68,36 +72,16 @@ char *kernel_npem_get_path(const char *cntrl_path)
 	return strdup(cntrl_path);
 }
 
-#define make_led_path(sysfs_led_path, sysfs_path, sysfs_led_name) \
-	snprintf(sysfs_led_path, sizeof(sysfs_led_path), "%s/leds/%s:%s/brightness", \
-		 sysfs_path, basename(sysfs_path), sysfs_led_name)
 
-static u32 read_kernel_npem_register(const char *sysfs_path)
+status_t make_led_path(char *sysfs_led_path, const char *sysfs_path,
+		  const char *sysfs_led_name)
 {
-	char led_path[PATH_MAX];
-	int i;
-	u32 reg = 0;
+	int len = snprintf(sysfs_led_path, PATH_MAX, "%s/leds/%s:%s/brightness",
+			sysfs_path, basename(sysfs_path), sysfs_led_name);
 
-	for (i = 0; i < ARRAY_SIZE(kernel_npem_leds); i++) {
-		make_led_path(led_path, sysfs_path, kernel_npem_leds[i].sysfs_led_name);
-		reg |= get_int("/", 0, led_path) ? kernel_npem_leds[i].bitmask : 0;
-	}
-	return reg;
-}
-
-static int write_kernel_npem_register(const char *sysfs_path, u32 val)
-{
-	char led_path[PATH_MAX], val_text[4];
-	int i;
-	struct stat sb;
-
-	for (i = 0; i < ARRAY_SIZE(kernel_npem_leds); i++) {
-		make_led_path(led_path, sysfs_path, kernel_npem_leds[i].sysfs_led_name);
-		snprintf(val_text, sizeof(val_text), val & kernel_npem_leds[i].bitmask ? "1" : "0");
-		if (!stat(led_path, &sb))
-			buf_write(led_path, val_text);
-	}
-	return 0;
+	if (len < 0 || len >= PATH_MAX)
+		return STATUS_SIZE_ERROR;
+	return STATUS_SUCCESS;
 }
 
 static u32 kernel_npem_supported_mask(const char *sysfs_path)
@@ -108,7 +92,9 @@ static u32 kernel_npem_supported_mask(const char *sysfs_path)
 	u32 supported = 0;
 
 	for (i = 0; i < ARRAY_SIZE(kernel_npem_leds); i++) {
-		make_led_path(led_path, sysfs_path, kernel_npem_leds[i].sysfs_led_name);
+		if (make_led_path(led_path, sysfs_path, kernel_npem_leds[i].sysfs_led_name))
+			continue;
+
 		if (!stat(led_path, &sb))
 			supported |= kernel_npem_leds[i].bitmask;
 	}
@@ -123,29 +109,36 @@ int is_kernel_npem_present(const char *path)
 enum led_ibpi_pattern kernel_npem_get_state(struct slot_property *slot)
 {
 	const char *path = slot->slot_spec.cntrl->sysfs_path;
-	const struct ibpi2value *ibpi2val;
-	u32 reg;
+	char led_path[PATH_MAX];
+	int i;
 
-	reg = read_kernel_npem_register(path);
-	ibpi2val =  get_by_bits(reg, ibpi_to_npem_capability,
-				ARRAY_SIZE(ibpi_to_npem_capability));
+	for (i = 0; i < ARRAY_SIZE(kernel_npem_leds); i++) {
+		if (make_led_path(led_path, path, kernel_npem_leds[i].sysfs_led_name))
+			continue;
+
+		if (get_int("/", 0, led_path) == 1) {
+			u32 cap_bit = kernel_npem_leds[i].bitmask;
+
+			return get_by_bits(cap_bit, ibpi_to_npem_capability,
+				ARRAY_SIZE(ibpi_to_npem_capability))->ibpi;
+		}
+	}
 
 	/*
 	 * If LOCATE is the only pattern supported, report LOCATE_OFF instead
-	 * of UNKNOWN.
+	 * of UNKNOWN. Needed by Dell quirks.
 	 */
-	if ((ibpi2val->ibpi == LED_IBPI_PATTERN_UNKNOWN) &&
-	    (kernel_npem_supported_mask(path) == PCI_NPEM_LOCATE_CAP))
+	if (kernel_npem_supported_mask(path) == PCI_NPEM_LOCATE_CAP)
 		return LED_IBPI_PATTERN_LOCATE_OFF;
-
-	return ibpi2val->ibpi;
+	return LED_IBPI_PATTERN_UNKNOWN;
 }
 
 status_t kernel_npem_set_slot(struct led_ctx *ctx, const char *sysfs_path,
 			      enum led_ibpi_pattern state)
 {
 	const struct ibpi2value *ibpi2val;
-	u32 requested, supported;
+	u32 requested_cap, supported_caps;
+	int i;
 
 	ibpi2val = get_by_ibpi(state, ibpi_to_npem_capability,
 			       ARRAY_SIZE(ibpi_to_npem_capability));
@@ -156,22 +149,50 @@ status_t kernel_npem_set_slot(struct led_ctx *ctx, const char *sysfs_path,
 		return STATUS_INVALID_STATE;
 	}
 
-	requested = (u32)ibpi2val->value;
-	supported = kernel_npem_supported_mask(sysfs_path);
+	requested_cap = ibpi2val->value;
+	supported_caps = kernel_npem_supported_mask(sysfs_path);
 
-	if (!(requested & supported))
-		/*
-		 * Allow OK (normal and locate_off states) to turn off other
-		 * states even if OK state isn't actually supported.
-		 */
-		if (requested != PCI_NPEM_OK_CAP) {
+	if (!(requested_cap & supported_caps)) {
+		if (requested_cap != PCI_NPEM_OK_CAP) {
 			lib_log(ctx, LED_LOG_LEVEL_INFO,
-				"NPEM: Controller %s doesn't support %s pattern\n",
-				sysfs_path, ibpi2str(state));
+				"NPEM: Device doesn't support %s pattern\n", ibpi2str(state));
 			return STATUS_INVALID_STATE;
 		}
+		/*
+		 * Proceed with OK even if it isn't supported. It is added
+		 * broadly, for all patterns mapped to OK (e.g. LOCATE_OFF), so
+		 * that clearing indications works on devices that only support a
+		 * subset of capabilities (needed by Dell quirks).
+		 */
+		lib_log(ctx, LED_LOG_LEVEL_WARNING,
+			"NPEM: Device does not support OK directly but turning off other enabled patterns\n");
+	}
 
-	write_kernel_npem_register(sysfs_path, requested);
+	for (i = 0; i < ARRAY_SIZE(kernel_npem_leds); i++) {
+		/*
+		 * It is expected that only one indication is enabled at once.
+		 * To avoid misbehaviors, all not configured indications are turned off.
+		 */
+		char led_path[PATH_MAX];
+		char *value = "0";
+		int ret;
+
+		if ((kernel_npem_leds[i].bitmask & supported_caps) == 0)
+			/* This indication is not supported by the hardware. */
+			continue;
+
+		if (make_led_path(led_path, sysfs_path, kernel_npem_leds[i].sysfs_led_name))
+			continue;
+
+		if ((u32)ibpi2val->value & kernel_npem_leds[i].bitmask)
+			value = "1";
+
+		lib_log(ctx, LED_LOG_LEVEL_DEBUG, "NPEM: Writing %s to %s\n", value, led_path);
+
+		ret = buf_write(led_path, value);
+		if (ret == -1)
+			return STATUS_FILE_WRITE_ERROR;
+	}
 
 	return STATUS_SUCCESS;
 }

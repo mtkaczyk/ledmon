@@ -177,10 +177,10 @@ static int _is_vmd_cntrl(const char *path)
 
 static int _is_npem_cntrl(const char *path, struct led_ctx *ctx)
 {
-	if (ctx->config.userspace_npem)
-		return is_npem_capable(path, ctx);
-	else
+	if (ctx->config.use_npem_driver)
 		return is_kernel_npem_present(path);
+	else
+		return is_npem_capable(path, ctx);
 }
 
 /**

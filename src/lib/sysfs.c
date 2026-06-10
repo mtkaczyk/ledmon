@@ -410,10 +410,10 @@ static void _scan_slots(struct led_ctx *ctx)
 
 	list_for_each(sysfs_get_cntrl_devices(ctx), cntrl_device) {
 		if (cntrl_device->cntrl_type == LED_CNTRL_TYPE_NPEM) {
-			if (ctx->config.userspace_npem)
-				slot = npem_slot_property_init(cntrl_device);
-			else
+			if (ctx->config.use_npem_driver)
 				slot = kernel_npem_slot_property_init(cntrl_device);
+			else
+				slot = npem_slot_property_init(cntrl_device);
 			if (slot)
 				list_append_ctx(&ctx->sys.slots_list, slot, ctx);
 		}
