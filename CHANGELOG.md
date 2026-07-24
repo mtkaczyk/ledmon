@@ -1,6 +1,6 @@
 ### v1.1.0
 
-[Commit list](https://github.com/intel/ledmon/compare/v1.0.0...v1.1.0)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v1.0.0...v1.1.0)
 
 Enhancements
 
@@ -18,7 +18,7 @@ Bug fixes
 
 ### v1.0.0 / 2024-02-28
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.97...v1.0.0)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.97...v1.0.0)
 
 Enhancements
 
@@ -48,7 +48,7 @@ Bug fixes
 
 ### v0.97 / 2023-05-16
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.96...v0.97)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.96...v0.97)
 
 Enhancements
 
@@ -74,7 +74,7 @@ Bug fixes
 
 ### v0.96 / 2022-05-26
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.95...v0.96)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.95...v0.96)
 
 Bug fixes
 
@@ -88,7 +88,7 @@ Bug fixes
 
 ### v0.95 / 2021-01-15
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.94...v0.95)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.94...v0.95)
 
 Enhancements
 
@@ -111,7 +111,7 @@ Bug fixes
 
 ### v0.94 / 2020-02-04
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.93...v0.94)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.93...v0.94)
 
 Enhancements
 
@@ -127,7 +127,7 @@ Bug fixes
 
 ### v0.93 / 2019-10-17
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.92...v0.93)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.92...v0.93)
 
 Enhancements
 
@@ -146,7 +146,7 @@ Bug fixes
 
 ### v0.92 / 2019-04-12
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.91-fixed...v0.92)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.91-fixed...v0.92)
 
 Bug fixes
 * Silence warning and error messages.
@@ -154,7 +154,7 @@ Bug fixes
 
 ### v0.91 / 2019-04-01
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.90...v0.91)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.90...v0.91)
 
 Enhancements
 
@@ -181,7 +181,7 @@ Bug fixes
 
 ### v0.90 / 2018-02-14
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.80...v0.90)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.80...v0.90)
 
 Enhancements
 
@@ -202,7 +202,7 @@ Bug fixes
 
 ### v0.80 / 2016-10-28
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.70...v0.80)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.70...v0.80)
 
 Enhancements
 
@@ -221,7 +221,7 @@ Bug fixes
 
 ### v0.70 / 2012-12-12
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.40...v0.70)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.40...v0.70)
 
 Enhancements
 
@@ -235,7 +235,7 @@ Bug fixes
 
 ### v0.40 / 2012-07-12
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.3...v0.40)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.3...v0.40)
 
 Enhancements
 
@@ -249,7 +249,7 @@ Bug fixes
 
 ### v0.3 / 2012-03-06
 
-[Commit list](https://github.com/intel/ledmon/compare/v0.2...v0.3)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v0.2...v0.3)
 
 Enhancements
 
@@ -262,7 +262,7 @@ Removals
 
 ### v0.2 / 2011-08-24
 
-[Commit list](https://github.com/intel/ledmon/compare/af8f20626e4e36cdf4bb9955fc65f22fec155580...v0.2)
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/af8f20626e4e36cdf4bb9955fc65f22fec155580...v0.2)
 
 Enhancements
 

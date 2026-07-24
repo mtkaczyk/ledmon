@@ -153,7 +153,7 @@ void _ledctl_version(void)
 static void print_ledctl_help_footer(void)
 {
 	printf("\nRefer to ledctl(8) man page for more detailed description (man ledctl).\n");
-	printf("Bugs should be reported at: https://github.com/intel/ledmon/issues\n");
+	printf("Bugs should be reported at: https://github.com/md-raid-utilities/ledmon/issues\n");
 }
 
 void _print_incorrect_help_usage(void)

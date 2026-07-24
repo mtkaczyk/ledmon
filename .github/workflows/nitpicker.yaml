@@ -4,7 +4,7 @@ permissions:
   pull-requests: write
 jobs:
   formatting-check:
-    if: github.repository == 'intel/ledmon'
+    if: github.repository == 'md-raid-utilities/ledmon'
     name: tag codeowners
     runs-on: ubuntu-latest
     steps:
