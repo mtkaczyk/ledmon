@@ -1,6 +1,6 @@
 # Header and Copyrights
 
-Verification of License and Copyrights is automated on Github by
+Verification of License and Copyrights is automated on GitHub by
 [Licensing test](https://github.com/md-raid-utilities/ledmon/blob/main/tests/licensing.py).
 
 The rules for Licenses and Copyrights are as follows:
