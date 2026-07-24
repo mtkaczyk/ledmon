@@ -135,7 +135,7 @@ def parse_help(lines):
 
     help_footer = [
         "Refer to ledctl(8) man page for more detailed description (man ledctl).",
-        "Bugs should be reported at: https://github.com/intel/ledmon/issues"
+        "Bugs should be reported at: https://github.com/md-raid-utilities/ledmon/issues"
     ]
 
     assert (next(line_inter) == help_footer[0])

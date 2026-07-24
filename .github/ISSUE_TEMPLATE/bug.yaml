@@ -7,12 +7,12 @@ body:
 - type: markdown
   attributes:
     value: |
-      Before submitting a bug, please test if your issue reproduces using ledmon upstream [README](https://github.com/intel/ledmon/blob/master/README.md).
+      Before submitting a bug, please test if your issue reproduces using ledmon upstream [README](https://github.com/md-raid-utilities/ledmon/blob/master/README.md).
       It is an open-source project, so we highly encourage you to fix issue yourself
       and to become a contributor.
 
       If the issue is submitted against compilation, please double check that all
-      dependencies listed [here](https://github.com/intel/ledmon?tab=readme-ov-file#1-dependencies)
+      dependencies listed [here](https://github.com/md-raid-utilities/ledmon?tab=readme-ov-file#1-dependencies)
       are installed.
 
       Please enable highest log level when collecting logs, it could speed up investigation
@@ -63,7 +63,7 @@ body:
       Please describe your environment.
     value: |
       OS:
-      Controller Type(supported: https://github.com/intel/ledmon/blob/master/doc/ledmon.pod):
+      Controller Type(supported: https://github.com/md-raid-utilities/ledmon/blob/master/doc/ledmon.pod):
       Disks($ ls -l /sys/block):
       NVMe multipath enabled(Yes|No|N/A)($ cat /sys/module/nvme_core/parameters/multipath)?:
   validations:

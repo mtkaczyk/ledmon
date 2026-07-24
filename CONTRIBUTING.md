@@ -1,7 +1,7 @@
 # Header and Copyrights
 
 Verification of License and Copyrights is automated on Github by
-[Licensing test](https://github.com/intel/ledmon/blob/main/tests/licensing.py).
+[Licensing test](https://github.com/md-raid-utilities/ledmon/blob/main/tests/licensing.py).
 
 The rules for Licenses and Copyrights are as follows:
 - Preferred comment mark should be used for file type. Please prefer to test or other files for

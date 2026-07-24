@@ -265,7 +265,7 @@ static void _ledmon_help(void)
 	print_opt("--version", "-v",
 			  "Displays version and license information.");
 	printf("\nRefer to ledmon(8) man page for more detailed description.\n");
-	printf("Bugs should be reported at: https://github.com/intel/ledmon/issues\n");
+	printf("Bugs should be reported at: https://github.com/md-raid-utilities/ledmon/issues\n");
 }
 
 /**
