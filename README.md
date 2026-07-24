@@ -1,12 +1,17 @@
-# This package contains the Enclosure LED Utilities, version 1.1.0
+# Enclosure LED Utilities
 
-Copyright (C) 2009-2024 Intel Corporation.
+Current version is 1.1.0.
 
-Files in this package can be freely distributed and used according
-to the terms of the GNU General Public License, version 2 or the
-GNU Lesser General Public License version 2.1 or later depending on file.
+Enclosure LED Utilities is a Linux project for monitoring and controlling storage device LEDs
+on platforms. It enables visual identification and status indication (locate, fault, rebuild, etc.) for drives in enclosures and backplanes.
 
-See http://www.gnu.org/ for details.
+For more details and list of supported LED control protocols, refer to `ledmon(8)` man page.
+
+The project provides following tools:
+- **`ledmon`** — a daemon that monitors md RAID array and automatically updates drive LEDs to reflect array status.
+- **`ledctl`** — a command-line tool for manually setting LED states on specific storage devices.
+- **`libled`** — a shared library that exposes LED control functionality for integration into
+  third-party applications.
 
 -------------------------
 
