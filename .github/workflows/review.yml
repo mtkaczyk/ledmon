@@ -34,8 +34,7 @@ jobs:
           *.yapf
           COPYING*
           */*.md
-          CHANGELOG.md
-          README.md
+          *.md
     - name: Run license review
       env:
         ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
