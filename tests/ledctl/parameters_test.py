@@ -94,7 +94,7 @@ def test_parameter_log_level_all_values(ledctl_binary):
 
 def parse_version(lines):
     help_header = [
-        "Intel(R) Enclosure LED Control Application",
+        "Enclosure LED Control Application",
         "Copyright (C) 2009-2024 Intel Corporation."
     ]
 

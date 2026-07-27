@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2009 Intel Corporation.
 
-# Intel(R) Enclosure LED Utilities
+# Enclosure LED Utilities
 
 SUBDIRS = include
 

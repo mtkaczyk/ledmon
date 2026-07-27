@@ -35,7 +35,7 @@ struct sysfs {
 	/**
 	 * This is internal variable global to sysfs module only. It is a list of
 	 * storage controller devices registered in the system and
-	 * supported by Intel(R) Enclosure LEDs Control Utility. Use sysfs_init()
+	 * supported by Enclosure LEDs Control Utility. Use sysfs_init()
 	 * function to initialize the variable. Use sysfs_scan() function to populate
 	 * the list. Use sysfs_reset() function to delete the content of the list.
 	 */

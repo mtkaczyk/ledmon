@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2009 Intel Corporation.
 
-# Intel(R) Enclosure LED Utilities
+# Enclosure LED Utilities
 
 =head1 NAME
 
-ledctl - Intel(R) LED control application for a storage enclosures.
+ledctl - LED control application for storage enclosures.
 
 =head1 SYNOPSIS
 
@@ -59,7 +59,7 @@ The ledmon application has the highest priority when accessing LEDs.
 Meaning that some patterns set by ledctl may have no effect if ledmon is running
 (exception: Locate pattern).
 
-The ledctl application is a part of Intel(R) Enclosure LED Utilities.
+The ledctl application is a part of Enclosure LED Utilities.
 
 =head4 The ledctl utilizes the following documents as references:
 
@@ -96,9 +96,7 @@ NPEM (Native PCIe Enclosure Management) - PCIe base specification rev 4.0
 
 =item
 
-VMD (Intel(R) Volume Management Device) - Intel(R) VROC (VMD NVMe RAID) Quick
-
-Configuration Guide rev 1.2
+VMD (Intel(R) Volume Management Device)
 
 =back
 

@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2009 Intel Corporation.
 
-# Intel(R) Enclosure LED Utilities
+# Enclosure LED Utilities
 
 =head1 NAME
 
-ledmon - Intel(R) LED monitor service for storage enclosures.
+ledmon - LED monitor service for storage enclosures.
 
 =head1 SYNOPSIS
 
@@ -67,7 +67,7 @@ The application might work with storage controllers of other vendors
 (especially SAS/SCSI controllers). However storage controllers of other
 vendors have not been tested.
 
-The ledmon application is part of Intel(R) Enclosure LED Utilities. Only
+The ledmon application is part of Enclosure LED Utilities. Only
 single instance of the application is allowed.
 
 =head4 The ledmon utilizes the following documents as references:
@@ -105,8 +105,7 @@ NPEM (Native PCIe Enclosure Management) - PCIe base specification rev 4.0
 
 =item
 
-VMD (Intel(R) Volume Management Device) - Intel(R) VROC (VMD NVMe RAID) Quick
-Configuration Guide rev 1.2
+VMD (Intel(R) Volume Management Device)
 
 =back
 

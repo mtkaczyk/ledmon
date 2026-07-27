@@ -1,16 +1,16 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Copyright (C) 2009 Intel Corporation.
 
-# Intel(R) Enclosure LED Utilities
+# Enclosure LED Utilities
 
 =head1 NAME
 
-ledmon.conf - Configuration file for Intel(R) Enclosure LED Utilities.
+ledmon.conf - Configuration file for Enclosure LED Utilities.
 
 =head1 DESCRIPTION
 
 The ledmon configuration file allows you to use advanced settings and functions
-of the Intel(R) Enclosure LED Utilities. The global location of the configuration
+of the Enclosure LED Utilities. The global location of the configuration
 file is F</etc/ledmon.conf>. Instead of a global configuration file, you can
 specify a local config file using the I<-c> option when running ledmon.
 
