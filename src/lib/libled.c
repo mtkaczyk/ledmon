@@ -67,7 +67,7 @@ void led_log_level_set(struct led_ctx *ctx, enum led_log_level_enum level)
 	ctx->log_lvl = level;
 }
 
-void use_kernel_npem_driver(struct led_ctx *ctx, int val)
+void led_use_kernel_npem_driver(struct led_ctx *ctx, int val)
 {
 	ctx->config.use_npem_driver = val;
 }

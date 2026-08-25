@@ -272,15 +272,16 @@ void LED_SYM_PUBLIC led_log_fd_set(struct led_ctx *ctx, int log_fd);
 void LED_SYM_PUBLIC led_log_level_set(struct led_ctx *ctx, enum led_log_level_enum level);
 
 /**
- * @brief Set use of userspace NPEM controller (instead of kernel NPEM controller).
+ * @brief Select the kernel NPEM driver or the userspace NPEM implementation.
  *
  * @param[in]	ctx	Library context
- * @param[in]	val	1 to use libled integrated NPEM, 0 to use kernel NPEM driver
+ * @param[in]	val	1 to use the kernel NPEM driver, 0 to use the userspace
+ *			(libled integrated) NPEM implementation
  *
  * Notes:
- *  - The kernel NPEM controller is a default
+ *  - The kernel NPEM driver is the default
  */
-void LED_SYM_PUBLIC use_kernel_npem_driver(struct led_ctx *ctx, int val);
+void LED_SYM_PUBLIC led_use_kernel_npem_driver(struct led_ctx *ctx, int val);
 
 /**
  * @brief Instructs the library to scan system hardware for block devices with LED support.

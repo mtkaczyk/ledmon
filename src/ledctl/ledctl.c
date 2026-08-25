@@ -1045,7 +1045,7 @@ static led_status_t load_library_prefs(void)
 
 	led_log_fd_set(ctx, get_log_fd(&conf));
 	led_log_level_set(ctx, conf.log_level);
-	use_kernel_npem_driver(ctx, conf.use_npem_driver);
+	led_use_kernel_npem_driver(ctx, conf.use_npem_driver);
 	return LED_STATUS_SUCCESS;
 }
 
