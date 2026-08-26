@@ -985,7 +985,7 @@ static led_status_t _read_shared_conf(void)
 /**
  * @brief Unset unsupported config parameters.
  *
- * For ledctl only LOG_LEVEL, LOG_PATH, and USE_NPEM_DRIVER are supported and
+ * For ledctl only LOG_LEVEL, LOG_PATH, and NPEM_BACKEND are supported and
  * desired. Unset other options.
  */
 static void _unset_unused_options(void)
@@ -1045,7 +1045,7 @@ static led_status_t load_library_prefs(void)
 
 	led_log_fd_set(ctx, get_log_fd(&conf));
 	led_log_level_set(ctx, conf.log_level);
-	led_use_kernel_npem_driver(ctx, conf.use_npem_driver);
+	led_set_npem_backend(ctx, conf.npem_backend);
 	return LED_STATUS_SUCCESS;
 }
 

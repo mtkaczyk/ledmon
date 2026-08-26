@@ -272,16 +272,38 @@ void LED_SYM_PUBLIC led_log_fd_set(struct led_ctx *ctx, int log_fd);
 void LED_SYM_PUBLIC led_log_level_set(struct led_ctx *ctx, enum led_log_level_enum level);
 
 /**
- * @brief Select the kernel NPEM driver or the userspace NPEM implementation.
+ * @brief NPEM backend selection.
+ *
+ * NPEM enclosure LEDs can be driven either through the kernel NPEM driver
+ * (CONFIG_PCI_NPEM, exposed via the sysfs LED class) or by libled accessing
+ * the PCIe NPEM registers in PCI config space directly.
+ */
+enum led_npem_backend {
+	/**
+	 * Probe for the kernel NPEM driver and use it when present, otherwise
+	 * fall back to direct PCI config space access. This is the default.
+	 */
+	LED_NPEM_BACKEND_AUTO = 0,
+
+	/** Always use the kernel NPEM driver. */
+	LED_NPEM_BACKEND_KERNEL = 1,
+
+	/** Always use direct PCI config space access. */
+	LED_NPEM_BACKEND_PCI = 2,
+};
+
+/**
+ * @brief Select which NPEM backend the library should use.
  *
  * @param[in]	ctx	Library context
- * @param[in]	val	1 to use the kernel NPEM driver, 0 to use the userspace
- *			(libled integrated) NPEM implementation
+ * @param[in]	backend	Backend selection policy, see enum led_npem_backend
  *
  * Notes:
- *  - The kernel NPEM driver is the default
+ *  - The default is LED_NPEM_BACKEND_AUTO
+ *  - The policy is resolved to a concrete backend per controller during
+ *    led_scan(), so a mix of NPEM controllers is handled correctly
  */
-void LED_SYM_PUBLIC led_use_kernel_npem_driver(struct led_ctx *ctx, int val);
+void LED_SYM_PUBLIC led_set_npem_backend(struct led_ctx *ctx, enum led_npem_backend backend);
 
 /**
  * @brief Instructs the library to scan system hardware for block devices with LED support.

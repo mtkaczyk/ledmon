@@ -175,32 +175,61 @@ static int _is_vmd_cntrl(const char *path)
 	return sysfs_check_driver(path, "vmd");
 }
 
-static int _is_npem_cntrl(const char *path, struct led_ctx *ctx)
+/**
+ * @brief Determine whether a controller supports NPEM and resolve its backend.
+ *
+ * Applies the configured NPEM backend policy. Under LED_NPEM_BACKEND_AUTO the
+ * kernel driver is preferred and PCI config space access is used as a fallback.
+ * When a forced backend is configured, only that backend is probed.
+ *
+ * @param[in]   path       path to controller device in sysfs tree.
+ * @param[in]   ctx        library context.
+ * @param[out]  resolved   set to the concrete backend that matched. Only valid
+ *                         when the function returns non-zero.
+ *
+ * @return 1 if the controller is NPEM capable via the resolved backend,
+ *         otherwise 0.
+ */
+static int _is_npem_cntrl(const char *path, struct led_ctx *ctx,
+			  enum led_npem_backend *resolved)
 {
-	if (ctx->config.use_npem_driver)
-		return is_kernel_npem_present(path);
-	else
-		return is_npem_capable(path, ctx);
+	enum led_npem_backend policy = ctx->config.npem_backend;
+
+	if (policy != LED_NPEM_BACKEND_PCI && is_kernel_npem_present(path)) {
+		*resolved = LED_NPEM_BACKEND_KERNEL;
+		return 1;
+	}
+
+	if (policy != LED_NPEM_BACKEND_KERNEL && is_npem_capable(path, ctx)) {
+		*resolved = LED_NPEM_BACKEND_PCI;
+		return 1;
+	}
+
+	return 0;
 }
 
 /**
  * @brief Determines the type of controller.
  *
  * This is internal function of 'controller device' module. The function
- * determines the type of controller device. It might be AHCI, SCSI or
- * UNKNOWN device type.
+ * determines the type of controller device, e.g. NPEM, VMD, AHCI or SCSI.
  *
  * @param[in]      path           path to controller device in sysfs tree.
+ * @param[in]      ctx            library context.
+ * @param[out]     npem_backend   for an NPEM controller, set to the concrete
+ *                                backend that matched. Only valid when the
+ *                                returned type is LED_CNTRL_TYPE_NPEM.
  *
  * @return The type of controller device. If the type returned is
  *         CNTRL_TYPE_UNKNOWN this means a controller device is not
  *         supported.
  */
-static enum led_cntrl_type _get_type(const char *path, struct led_ctx *ctx)
+static enum led_cntrl_type _get_type(const char *path, struct led_ctx *ctx,
+				     enum led_npem_backend *npem_backend)
 {
 	enum led_cntrl_type type = LED_CNTRL_TYPE_UNKNOWN;
 
-	if (_is_npem_cntrl(path, ctx)) {
+	if (_is_npem_cntrl(path, ctx, npem_backend)) {
 		type = LED_CNTRL_TYPE_NPEM;
 	} else if (_is_vmd_cntrl(path)) {
 		type = LED_CNTRL_TYPE_VMD;
@@ -371,9 +400,10 @@ struct cntrl_device *cntrl_device_init(const char *path, struct led_ctx *ctx)
 {
 	unsigned int em_enabled;
 	enum led_cntrl_type type;
+	enum led_npem_backend npem_backend = LED_NPEM_BACKEND_AUTO;
 	struct cntrl_device *device = NULL;
 
-	type = _get_type(path, ctx);
+	type = _get_type(path, ctx, &npem_backend);
 	if (type != LED_CNTRL_TYPE_UNKNOWN) {
 		if (!list_is_empty(&ctx->config.allowlist)) {
 			char *cntrl = NULL;
@@ -435,6 +465,7 @@ struct cntrl_device *cntrl_device_init(const char *path, struct led_ctx *ctx)
 					}
 				}
 				device->cntrl_type = type;
+				device->npem_backend = npem_backend;
 				strncpy(device->sysfs_path, path, PATH_MAX - 1);
 				device->ctx = ctx;
 			}

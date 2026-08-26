@@ -35,7 +35,7 @@ struct configuration {
 	int blink_on_init;
 	int rebuild_blink_on_all;
 	int raid_members_only;
-	int use_npem_driver;
+	enum led_npem_backend npem_backend;
 
 	struct list allowlist;
 	struct list excludelist;

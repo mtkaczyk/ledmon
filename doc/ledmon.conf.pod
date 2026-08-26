@@ -71,11 +71,13 @@ is set to false - only the drive that the RAID is rebuilding to will be marked
 with appropriate LED pattern. If value is set to true all drives from RAID
 that is during rebuild will blink during this operation.
 
-B<USE_NPEM_DRIVER> - Use the NPEM kernel driver (CONFIG_PCI_NPEM).
-This should be disabled for kernels that don't include the kernel NPEM driver.
-The default value is true. If disabled, ledmon will try to access PCI config space.
-Kernel driver is preferred because it also works with _DSM LED control and
-it is not vulnerable on PCI config space access lockdown.
+B<NPEM_BACKEND> - Select the NPEM backend. Accepts I<auto> (the default),
+I<kernel> and I<pci>. With I<auto>, ledmon probes each controller for the NPEM
+kernel driver (CONFIG_PCI_NPEM) and uses it when present, otherwise it falls
+back to accessing PCI config space directly. Setting I<kernel> forces use of the
+kernel driver and I<pci> forces PCI config space access. The kernel driver is
+preferred because it also works with _DSM LED control and it is not vulnerable
+to PCI config space access lockdown.
 
 B<ALLOWLIST> - Ledmon will limit changing LED state to controllers listed on
 allowlist. If any allowlist is set, only devices from the list will be scanned by

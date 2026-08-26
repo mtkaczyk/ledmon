@@ -25,6 +25,13 @@ struct cntrl_device {
 	enum led_cntrl_type cntrl_type;
 
 	/**
+	 * Resolved NPEM backend (kernel driver vs PCI config space). Only
+	 * meaningful when cntrl_type is LED_CNTRL_TYPE_NPEM. The AUTO policy is
+	 * resolved to a concrete backend here during controller detection.
+	 */
+	enum led_npem_backend npem_backend;
+
+	/**
 	 * Flag if scsi controller driver is "isci"
 	 */
 	int isci_present;

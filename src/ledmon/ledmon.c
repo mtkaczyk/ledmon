@@ -900,7 +900,7 @@ static int load_library_prefs(void)
 
 	led_log_fd_set(ctx, get_log_fd(&conf));
 	led_log_level_set(ctx, conf.log_level);
-	led_use_kernel_npem_driver(ctx, conf.use_npem_driver);
+	led_set_npem_backend(ctx, conf.npem_backend);
 	device_blink_behavior_set(ctx, conf.blink_on_migration, conf.blink_on_init,
 					conf.rebuild_blink_on_all, conf.raid_members_only);
 

@@ -33,7 +33,7 @@ led_status_t led_new(struct led_ctx **ctx)
 	list_init(&t_ctx->config.allowlist, free);
 	list_init(&t_ctx->config.excludelist, free);
 
-	t_ctx->config.use_npem_driver = 1;
+	t_ctx->config.npem_backend = LED_NPEM_BACKEND_AUTO;
 	t_ctx->log_fd = -1;
 	t_ctx->log_lvl = LED_LOG_LEVEL_ERROR;
 
@@ -67,9 +67,9 @@ void led_log_level_set(struct led_ctx *ctx, enum led_log_level_enum level)
 	ctx->log_lvl = level;
 }
 
-void led_use_kernel_npem_driver(struct led_ctx *ctx, int val)
+void led_set_npem_backend(struct led_ctx *ctx, enum led_npem_backend backend)
 {
-	ctx->config.use_npem_driver = val;
+	ctx->config.npem_backend = backend;
 }
 
 led_status_t led_scan(struct led_ctx *ctx)

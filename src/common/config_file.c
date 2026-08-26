@@ -46,7 +46,7 @@ int ledmon_init_conf(struct ledmon_conf *conf, enum led_log_level_enum lvl, cons
 {
 	memset(conf, 0, sizeof(struct ledmon_conf));
 	conf->log_level = lvl;
-	conf->use_npem_driver = 1;
+	conf->npem_backend = LED_NPEM_BACKEND_AUTO;
 	list_init(&conf->cntrls_allowlist, free);
 	list_init(&conf->cntrls_excludelist, free);
 
@@ -67,6 +67,33 @@ static int parse_bool(char *s)
 		return 0;
 
 	fprintf(stderr, "Unknown bool value: %s\n", s);
+	return -1;
+}
+
+static const struct {
+	const char *name;
+	enum led_npem_backend backend;
+} npem_backends[] = {
+	{ "auto", LED_NPEM_BACKEND_AUTO },
+	{ "kernel", LED_NPEM_BACKEND_KERNEL },
+	{ "pci", LED_NPEM_BACKEND_PCI },
+};
+
+static const char *npem_backend_to_str(enum led_npem_backend backend)
+{
+	for (size_t i = 0; i < ARRAY_SIZE(npem_backends); i++)
+		if (npem_backends[i].backend == backend)
+			return npem_backends[i].name;
+	return "auto";
+}
+
+static int npem_backend_from_str(const char *s, enum led_npem_backend *backend)
+{
+	for (size_t i = 0; i < ARRAY_SIZE(npem_backends); i++)
+		if (!strcasecmp(s, npem_backends[i].name)) {
+			*backend = npem_backends[i].backend;
+			return 0;
+		}
 	return -1;
 }
 
@@ -217,10 +244,9 @@ static int parse_next(FILE *fd, struct ledmon_conf *conf)
 		conf->raid_members_only = parse_bool(s);
 		if (conf->raid_members_only < 0)
 			return -1;
-	} else if (!strncmp(s, "USE_NPEM_DRIVER=", 16)) {
-		s += 16;
-		conf->use_npem_driver = parse_bool(s);
-		if (conf->use_npem_driver < 0)
+	} else if (!strncmp(s, "NPEM_BACKEND=", 13)) {
+		s += 13;
+		if (npem_backend_from_str(s, &conf->npem_backend) != 0)
 			return -1;
 	} else if (_parse_and_add_to_list(s, WHITELIST, WHITELIST_LEN, &conf->cntrls_allowlist)) {
 		/* Deprecated, provided for backwards compatibility */
@@ -336,7 +362,7 @@ int ledmon_write_shared_conf(struct ledmon_conf *conf)
 	snprintf(buf + strlen(buf), sizeof(buf) - strlen(buf),
 		 "INTERVAL=%d\n", conf->scan_interval);
 	snprintf(buf + strlen(buf), sizeof(buf) - strlen(buf),
-		 "USE_NPEM_DRIVER=%d\n", conf->use_npem_driver);
+		 "NPEM_BACKEND=%s\n", npem_backend_to_str(conf->npem_backend));
 	allowlist = conf_list_to_str(&conf->cntrls_allowlist);
 	if (allowlist) {
 		snprintf(buf + strlen(buf), sizeof(buf) - strlen(buf),
