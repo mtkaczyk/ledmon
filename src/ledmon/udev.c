@@ -104,7 +104,7 @@ int get_udev_monitor(void)
 
 static int _check_raid(const char *path)
 {
-	char *t = strrchr(path, '/');
+	const char *t = strrchr(path, '/');
 
 	if (t == NULL)
 		return 0;
@@ -122,7 +122,7 @@ static enum udev_action _get_udev_action(const char *action)
 	return ret;
 }
 
-static void _clear_raid_dev_info(struct block_device *block, char *raid_dev)
+static void _clear_raid_dev_info(struct block_device *block, const char *raid_dev)
 {
 	if (block->raid_dev) {
 		char *tmp = strrchr(block->raid_dev->sysfs_path, '/');
@@ -171,7 +171,7 @@ int handle_udev_event(struct list *ledmon_block_list, struct led_ctx *ctx)
 		if (!block) {
 			if (act == UDEV_ACTION_REMOVE && _check_raid(syspath)) {
 				/*ledmon is interested about removed arrays*/
-				char *dev_name;
+				const char *dev_name;
 
 				dev_name = strrchr(syspath, '/') + 1;
 				log_debug("REMOVED %s", dev_name);

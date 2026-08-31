@@ -24,7 +24,8 @@
 
 static char *get_drive_end_dev(const char *path)
 {
-	char *s, *c, *p;
+	char *p;
+	const char *c, *s;
 
 	c = strstr(path, "end_device");
 	if (!c)

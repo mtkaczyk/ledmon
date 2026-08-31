@@ -93,7 +93,7 @@ static int _get_ipmi_nvme_port(char *path, struct led_ctx *ctx)
 	list_for_each(&dir, dir_path) {
 		port_name = get_text_to_dest(dir_path, "address", buf, sizeof(buf));
 		if (port_name && !strcmp(port_name, p)) {
-			char *dname = strrchr(dir_path, '/');
+			const char *dname = strrchr(dir_path, '/');
 			if (dname) {
 				dname++;
 				if (str_toi(&port, dname, NULL, 0) != 0) {
@@ -449,7 +449,7 @@ status_t _amd_ipmi_write(struct block_device *device, enum led_ibpi_pattern ibpi
 
 char *_amd_ipmi_get_path(const char *cntrl_path, const char *sysfs_path)
 {
-	char *t;
+	const char *t;
 
 	/* For NVMe devices we can just dup the path sysfs path */
 	if (strstr(cntrl_path, "nvme"))

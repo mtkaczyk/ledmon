@@ -39,7 +39,6 @@ int _find_file_path(const char *start_path, const char *filename,
 	int rc, found;
 	struct stat sbuf;
 	struct list dir;
-	char *dir_name;
 	const char *dir_path;
 
 	rc = scan_dir(start_path, &dir);
@@ -50,7 +49,7 @@ int _find_file_path(const char *start_path, const char *filename,
 
 	found = 0;
 	list_for_each(&dir, dir_path) {
-		dir_name = strrchr(dir_path, '/');
+		const char *dir_name = strrchr(dir_path, '/');
 		if (!dir_name)
 			continue;
 

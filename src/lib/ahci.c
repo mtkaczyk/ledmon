@@ -99,7 +99,7 @@ status_t ahci_sgpio_write(struct block_device *device, enum led_ibpi_pattern ibp
 
 char *ahci_get_port_path(const char *path)
 {
-	char *target_p, *host_p;
+	const char *target_p, *host_p;
 	size_t host_length, length_to_target;
 	char *buf;
 

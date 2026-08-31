@@ -46,7 +46,7 @@ status_t kernel_npem_set_state(struct slot_property *slot, enum led_ibpi_pattern
  * @brief Initializes a slot_property for a specified NPEM controller.
  *
  * @param[in]         npem_cntrl       Specified npem controller for this slot
- * @return struct slot_property* if successful, else NULL on allocation failure
+ * @return struct slot_property* if successful, else NULL on allocation failure.
  */
 struct slot_property *kernel_npem_slot_property_init(struct cntrl_device *npem_cntrl);
 

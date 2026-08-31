@@ -25,7 +25,7 @@ jobs:
       - name: 'Generate compiling configurations with library disabled'
         run: . ./autogen.sh && ./configure CFLAGS=${{ env.cflags }}
       - name: 'Make'
-        run: V=1 make -j$(nproc) CC=gcc-${{ matrix.gcc-version }} CXX=g++-${{ matrix.gcc-version }} 
+        run: V=1 make -j$(nproc) CC=gcc-${{ matrix.gcc-version }} CXX=g++-${{ matrix.gcc-version }}
       - name: 'Hardening check: ledmon'
         run: hardening-check src/ledmon/ledmon
       - name: 'Hardening check: ledctl'
@@ -88,3 +88,39 @@ jobs:
         run: |
           # Run only non-hardware dependent tests
           pytest --ledctl-binary=src/ledctl/ledctl
+  fedora-container:
+    name: Compilation test on Fedora
+    strategy:
+      matrix:
+        # 43 -> gcc 15, latest -> gcc 16 (current Fedora release)
+        fedora-version: [43, latest]
+    runs-on: ubuntu-24.04
+    container:
+      image: fedora:${{ matrix.fedora-version }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: 'Install building dependencies'
+        run: |
+          dnf install -y --setopt=install_weak_deps=False \
+            autoconf \
+            autoconf-archive \
+            automake \
+            check-devel \
+            gcc \
+            git \
+            libtool \
+            make \
+            pciutils-devel \
+            perl-podlators \
+            pkgconf-pkg-config \
+            python3-pytest \
+            sg3_utils-devel \
+            systemd-devel
+      - name: 'Generate compiling configurations'
+        run: . ./autogen.sh && ./configure --enable-systemd --enable-library --enable-test
+      - name: 'Make'
+        run: make -j"$(nproc)"
+      - name: 'Run tests'
+        run: |
+          # Run only non-hardware dependent tests
+          pytest tests --ledctl-binary=src/ledctl/ledctl

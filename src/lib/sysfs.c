@@ -112,7 +112,7 @@ static void _tail_vol_add(struct led_ctx *ctx, const char *path, struct raid_dev
 {
 	struct tail_device *device;
 
-	char *t = strrchr(path, '/');
+	const char *t = strrchr(path, '/');
 	if (strncmp(t + 1, "dev-", 4) == 0) {
 		device = tail_device_init(path, &ctx->sys.sysfs_block_list);
 		if (device) {
@@ -173,7 +173,7 @@ static void _tail_cnt_add(struct led_ctx *ctx, const char *path, struct raid_dev
 {
 	struct tail_device *device;
 
-	char *t = strrchr(path, '/');
+	const char *t = strrchr(path, '/');
 
 	if (!t)
 		return;
@@ -294,7 +294,7 @@ static void _pci_slots_add(struct led_ctx *ctx, const char *path)
  */
 static void _check_raid(struct led_ctx *ctx, const char *path)
 {
-	char *t = strrchr(path, '/');
+	const char *t = strrchr(path, '/');
 
 	if (!t)
 		return;

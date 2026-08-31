@@ -144,7 +144,7 @@ static int _is_smp_cntrl(const char *path)
 {
 	int result = 0;
 	struct list dir;
-	char *p;
+	const char *p;
 	char host_path[PATH_MAX] = { 0 };
 	if (scan_dir(path, &dir) == 0) {
 		const char *dir_path;
@@ -277,7 +277,7 @@ void free_hosts(struct _host_type *h)
 void _find_host(const char *path, struct _host_type **hosts)
 {
 	const int host_len = sizeof("host") - 1;
-	char *p;
+	const char *p;
 	int index = -1;
 	struct _host_type *th;
 	DIR *d;

@@ -72,7 +72,6 @@ char *kernel_npem_get_path(const char *cntrl_path)
 	return strdup(cntrl_path);
 }
 
-
 status_t make_led_path(char *sysfs_led_path, const char *sysfs_path,
 		  const char *sysfs_led_name)
 {
