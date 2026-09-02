@@ -4,6 +4,7 @@
 /* System headers */
 #include <dirent.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -187,25 +188,25 @@ static int _is_vmd_cntrl(const char *path)
  * @param[out]  resolved   set to the concrete backend that matched. Only valid
  *                         when the function returns non-zero.
  *
- * @return 1 if the controller is NPEM capable via the resolved backend,
- *         otherwise 0.
+ * @return true if the controller is NPEM capable via the resolved backend,
+ *         otherwise false.
  */
-static int _is_npem_cntrl(const char *path, struct led_ctx *ctx,
-			  enum led_npem_backend *resolved)
+static bool _is_npem_cntrl(const char *path, struct led_ctx *ctx,
+			   enum led_npem_backend *resolved)
 {
 	enum led_npem_backend policy = ctx->config.npem_backend;
 
 	if (policy != LED_NPEM_BACKEND_PCI && is_kernel_npem_present(path)) {
 		*resolved = LED_NPEM_BACKEND_KERNEL;
-		return 1;
+		return true;
 	}
 
 	if (policy != LED_NPEM_BACKEND_KERNEL && is_npem_capable(path, ctx)) {
 		*resolved = LED_NPEM_BACKEND_PCI;
-		return 1;
+		return true;
 	}
 
-	return 0;
+	return false;
 }
 
 /**
