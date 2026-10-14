@@ -1,3 +1,21 @@
+### v1.2.0
+
+[Commit list](https://github.com/md-raid-utilities/ledmon/compare/v1.1.0...v1.2.0)
+
+Enhancements
+
+* Add support for the Linux kernel NPEM driver with backend selection and auto-detection
+* Add persistent drive ID support to libled
+* Report additional LED states for SES devices
+* Add support for newer Dell systems
+
+Bug fixes
+
+* Correct SES element index interpretation when EIIOE is set
+* Fix IBPI pattern parsing and ledctl status reporting
+* Fix memory leaks and a use-after-return issue
+* Provide basename functionality on non-glibc systems
+
 ### v1.1.0
 
 [Commit list](https://github.com/md-raid-utilities/ledmon/compare/v1.0.0...v1.1.0)
